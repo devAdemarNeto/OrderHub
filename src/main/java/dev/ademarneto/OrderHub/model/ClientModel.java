@@ -4,6 +4,7 @@ package dev.ademarneto.OrderHub.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_client")
@@ -12,19 +13,23 @@ public class ClientModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
 
-    String nome;
+    private String nome;
 
 
-    String cpf;
+    private String cpf;
 
 
-    String email;
+    private String email;
 
 
-    LocalDate dataCadastro;
+    private LocalDate dataCadastro;
+
+
+    @OneToMany (mappedBy = "client")
+    private List<OrderModel> order;
 
 
     public ClientModel() {
@@ -69,4 +74,7 @@ public class ClientModel {
     public void setDataCadastro(LocalDate dataCadastro) {
         this.dataCadastro = dataCadastro;
     }
+
+
+
 }
