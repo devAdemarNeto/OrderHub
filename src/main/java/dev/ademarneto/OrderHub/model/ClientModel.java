@@ -1,7 +1,11 @@
 package dev.ademarneto.OrderHub.model;
 
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -20,18 +24,27 @@ public class ClientModel {
     private Long id;
 
 
+    @NotBlank(message = "Nome é obrigatório")
+    @Column(name = "nome_cliente", nullable = false, length = 100)
     private String nome;
 
 
+    @NotBlank(message = "CPF é obrigatório")
+    @Column(nullable = false, unique = true, length = 11)
     private String cpf;
 
 
+    @NotBlank(message = "Email é obrigatório")
+    @Email(message = "Email inválido")
+    @Column(nullable = false, length = 100)
     private String email;
 
 
+    @NotNull(message = "Data de cadastro é obrigatótio")
+    @Column(name = "data_cadastro", nullable = false)
     private LocalDate dataCadastro;
 
 
-    @OneToMany (mappedBy = "client")
-    private List<OrderModel> order;
+    @OneToMany (mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderModel> orders;
 }

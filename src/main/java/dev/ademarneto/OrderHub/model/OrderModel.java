@@ -1,6 +1,9 @@
 package dev.ademarneto.OrderHub.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,21 +18,31 @@ import java.time.LocalDate;
 @Data
 public class OrderModel {
 
-
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 
+    @NotBlank(message = "Numero do pedido é obrigatório")
+    @Column(name = "numero_pedido", nullable = false,unique = true,length = 20)
     private String numeroPedido;
-    private String descricao;
-    private BigDecimal valorTolal;
-    private LocalDate localPedido;
 
-    @ManyToOne
-    @JoinColumn(name = "client_id")
+    @NotBlank(message = "Descrição é obrigatória")
+    @Column(nullable = false,length = 500)
+    private String descricao;
+
+    @NotNull(message = "Valor é obrigatório")
+    @DecimalMin(value = "0,01", message = "Valor deve ser maior que zero")
+    @Column(name = "valor_total",nullable = false, precision = 10, scale = 2)
+    private BigDecimal valorTolal;
+
+    @NotNull(message = "Data do pedido é obrigatório")
+    @Column(name = "data_pedido", nullable = false)
+    private LocalDate dataPedido;
+
+    @NotNull(message = "Cliente é obrigatório")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id", nullable = false)
     private ClientModel client;
 
 
