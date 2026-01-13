@@ -1,6 +1,7 @@
 package dev.ademarneto.OrderHub.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -46,5 +47,6 @@ public class ClientModel {
 
 
     @OneToMany (mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<OrderModel> orders;
 }
