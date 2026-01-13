@@ -5,6 +5,7 @@ import dev.ademarneto.OrderHub.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -18,6 +19,12 @@ public class OrderService {
     //Listar pedidos
     public List<OrderModel>  listarPedidos(){
         return orderRepository.findAll();
+    }
+
+    //Listar pedidos por id
+    public OrderModel listarPedidosId(Long id){
+        Optional<OrderModel> orderID = orderRepository.findById(id);
+        return orderID.orElse(null);
     }
 
 
