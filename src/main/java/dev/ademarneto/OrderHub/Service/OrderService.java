@@ -16,6 +16,12 @@ public class OrderService {
     }
 
 
+    //Criar um novo Pedido
+    public OrderModel criarPedido(OrderModel order){
+        return orderRepository.save(order);
+    }
+
+
     //Listar pedidos
     public List<OrderModel>  listarPedidos(){
         return orderRepository.findAll();
@@ -26,5 +32,20 @@ public class OrderService {
         Optional<OrderModel> orderID = orderRepository.findById(id);
         return orderID.orElse(null);
     }
+
+
+    // Deletar pedido
+    public void deletarPedido(Long id){
+        orderRepository.deleteById(id);
+    }
+
+    //Atualizar Pedido
+    public OrderModel atualizarPedido(Long id, OrderModel pedidoAtualizado){
+        if(orderRepository.existsById(id)){
+            return orderRepository.save(pedidoAtualizado);
+        }
+        return null;
+    }
+
 
 }

@@ -34,7 +34,7 @@ public class OrderModel {
     @NotNull(message = "Valor é obrigatório")
     @DecimalMin(value = "0,01", message = "Valor deve ser maior que zero")
     @Column(name = "valor_total",nullable = false, precision = 10, scale = 2)
-    private BigDecimal valorTolal;
+    private BigDecimal valorTotal;
 
     @NotNull(message = "Data do pedido é obrigatório")
     @Column(name = "data_pedido", nullable = false)

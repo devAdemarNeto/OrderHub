@@ -14,6 +14,11 @@ public class ClientService {
         this.clientRepository = clientRepository;
     }
 
+    //Criar um novo cliente
+    public ClientModel criarCliente(ClientModel client){
+        return clientRepository.save(client);
+    }
+
     //Listar Clientes
     public List<ClientModel> listarClientes(){
         return clientRepository.findAll();
@@ -25,7 +30,18 @@ public class ClientService {
         return clientID.orElse(null);
     }
 
+    //Deletar Cliente
+    public void deletarCliente(Long id){
+        clientRepository.deleteById(id);
+    }
 
+    //Atualizar Pedido
+    public ClientModel atualizarCliente(Long id, ClientModel  clienteAtualizado){
+        if(clientRepository.existsById(id)){
+            return clientRepository.save(clienteAtualizado);
+        }
+        return null;
+    }
 
 
 }
