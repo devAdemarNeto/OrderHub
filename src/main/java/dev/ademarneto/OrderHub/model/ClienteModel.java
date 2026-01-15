@@ -2,7 +2,6 @@ package dev.ademarneto.OrderHub.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -17,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class ClientModel {
+public class ClienteModel {
 
 
     @Id
@@ -46,7 +45,7 @@ public class ClientModel {
     private LocalDate dataCadastro;
 
 
-    @OneToMany (mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany (mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<OrderModel> orders;
+    private List<PedidoModel> pedido;
 }
