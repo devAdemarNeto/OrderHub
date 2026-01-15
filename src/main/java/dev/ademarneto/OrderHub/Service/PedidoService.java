@@ -80,8 +80,8 @@ public class PedidoService {
                 pedido.setDataPedido(pedidoAtualizado.getDataPedido());
             }
 
-            if (pedidoAtualizado.getClient() != null){
-                pedido.setClient(pedidoAtualizado.getClient());
+            if (pedidoAtualizado.getCliente() != null){
+                pedido.setCliente(pedidoAtualizado.getCliente());
             }
 
             return pedidoRepository.save(pedido);

@@ -42,8 +42,8 @@ public class PedidoModel {
 
     @NotNull(message = "Cliente é obrigatório")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id", nullable = false)
-    private ClienteModel client;
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private ClienteModel cliente;
 
 
 }

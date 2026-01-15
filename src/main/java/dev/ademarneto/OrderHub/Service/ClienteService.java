@@ -3,11 +3,13 @@ package dev.ademarneto.OrderHub.Service;
 import dev.ademarneto.OrderHub.model.ClienteModel;
 import dev.ademarneto.OrderHub.repository.ClienteRepository;
 import dev.ademarneto.OrderHub.validation.ValidadorCpf;
+import org.springframework.stereotype.Service;
 
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ClienteService {
     private ClienteRepository clienteRepository;
 

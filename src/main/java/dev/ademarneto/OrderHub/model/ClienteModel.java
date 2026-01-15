@@ -47,5 +47,5 @@ public class ClienteModel {
 
     @OneToMany (mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<PedidoModel> pedido;
+    private List<PedidoModel> pedidos;
 }
