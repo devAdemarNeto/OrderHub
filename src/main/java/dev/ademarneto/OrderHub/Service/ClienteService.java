@@ -1,5 +1,7 @@
 package dev.ademarneto.OrderHub.Service;
 
+import dev.ademarneto.OrderHub.DTO.ClienteDTO;
+import dev.ademarneto.OrderHub.Mapper.ClienteMapper;
 import dev.ademarneto.OrderHub.model.ClienteModel;
 import dev.ademarneto.OrderHub.repository.ClienteRepository;
 import dev.ademarneto.OrderHub.validation.ValidadorCpf;
@@ -8,56 +10,68 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ClienteService {
     private ClienteRepository clienteRepository;
+    private ClienteMapper clienteMapper;
 
-    public ClienteService(ClienteRepository clientRepository) {
-        this.clienteRepository = clientRepository;
+    public ClienteService(ClienteRepository clienteRepository, ClienteMapper clienteMapper) {
+        this.clienteRepository = clienteRepository;
+        this.clienteMapper = clienteMapper;
     }
 
     //Criar um novo cliente
-    public ClienteModel criarCliente(ClienteModel client){
+    public ClienteDTO criarCliente(ClienteDTO clienteDTO){
+        ClienteModel cliente = clienteMapper.map(clienteDTO);
 
         //Regra de negócio: CPF válido
-        if(!ValidadorCpf.isValid(client.getCpf())){
+        if(!ValidadorCpf.isValid(clienteDTO.getCpf())){
             throw new IllegalArgumentException("CPF inválido");
         }
 
         //Regra de negócio: CPF único
-        if(clienteRepository.existsByCpf(client.getCpf())){
+        if(clienteRepository.existsByCpf(clienteDTO.getCpf())){
             throw new IllegalArgumentException("CPF já cadastrado");
         }
+        cliente = clienteRepository.save(cliente);
 
-        return clienteRepository.save(client);
+        return clienteMapper.map(cliente);
     }
 
     //Listar Clientes
-    public List<ClienteModel> listarClientes(){
-        return clienteRepository.findAll();
+    public List<ClienteDTO> listarClientes(){
+        List<ClienteModel> clientes = clienteRepository.findAll();
+        return clientes.stream()
+                .map(clienteMapper::map)
+                .collect(Collectors.toList());
     }
 
     //Buscar cliente por CPF
-    public ClienteModel buscarPorCpf(String cpf){
-        return clienteRepository.findByCpf(cpf).orElse(null);
+    public ClienteDTO buscarPorCpf(String cpf){
+        Optional<ClienteModel> cliente = clienteRepository.findByCpf(cpf);
+        return cliente.map(clienteMapper::map).orElse(null);
+
     }
 
     //Atualizar cliente por CPF
-    public ClienteModel atualizarPorCpf(String cpf, ClienteModel clienteAtualizado){
+    public ClienteDTO atualizarPorCpf(String cpf, ClienteDTO clienteDTO){
         Optional<ClienteModel> clienteExistente = clienteRepository.findByCpf(cpf);
 
         if (clienteExistente.isPresent()){
-            ClienteModel cliente = clienteExistente.get();
+            ClienteModel clienteAtualizado = clienteMapper.map(clienteDTO);
+            clienteAtualizado.setCpf(cpf);
+            ClienteModel clienteSalvo = clienteRepository.save(clienteAtualizado);
 
-            if (clienteAtualizado.getNome() != null && !clienteAtualizado.getNome().isBlank()){
-                cliente.setNome(clienteAtualizado.getNome());
+            if (clienteDTO.getNome() != null && !clienteDTO.getNome().isBlank()){
+                clienteSalvo.setNome(clienteDTO.getNome());
             }
 
-            if (clienteAtualizado.getEmail() != null && !clienteAtualizado.getNome().isBlank()){
-                cliente.setEmail(clienteAtualizado.getEmail());
+            if (clienteDTO.getEmail() != null && !clienteDTO.getNome().isBlank()){
+                clienteSalvo.setEmail(clienteDTO.getEmail());
             }
-            return clienteRepository.save(cliente);
+            return clienteMapper.map(clienteSalvo);
         }
         return null;
     }

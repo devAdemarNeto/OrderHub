@@ -1,35 +1,48 @@
 package dev.ademarneto.OrderHub.Service;
 
+import dev.ademarneto.OrderHub.DTO.PedidoDTO;
+import dev.ademarneto.OrderHub.Mapper.PedidoMapper;
 import dev.ademarneto.OrderHub.model.PedidoModel;
 import dev.ademarneto.OrderHub.repository.PedidoRepository;
+import org.apache.catalina.mapper.Mapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PedidoService {
     private PedidoRepository pedidoRepository;
+    private PedidoMapper pedidoMapper;
 
-    public PedidoService(PedidoRepository pedidoRepository) {
+    public PedidoService(PedidoRepository pedidoRepository, PedidoMapper pedidoMapper) {
         this.pedidoRepository = pedidoRepository;
+        this.pedidoMapper = pedidoMapper;
     }
 
     //Criar um novo Pedido
-    public PedidoModel criarPedido(PedidoModel order){
-        return pedidoRepository.save(order);
+    public PedidoDTO criarPedido(PedidoDTO pedidoDTO){
+        PedidoModel pedido = pedidoMapper.map(pedidoDTO);
+        pedido = pedidoRepository.save(pedido);
+        return pedidoMapper.map(pedido);
     }
 
 
     //Listar pedidos
-    public List<PedidoModel>  listarPedidos(){
-        return pedidoRepository.findAll();
+    public List<PedidoDTO>  listarPedidos(){
+        List<PedidoModel> pedidos = pedidoRepository.findAll();
+        return pedidos.stream()
+                .map(pedidoMapper::map)
+                .collect(Collectors.toList());
+
     }
 
     //Listar pedidos por id
-    public PedidoModel listarPedidosId(Long id){
-        Optional<PedidoModel> orderID = pedidoRepository.findById(id);
-        return orderID.orElse(null);
+    public PedidoDTO listarPedidosId(Long id){
+        Optional<PedidoModel> pedidoId = pedidoRepository.findById(id);
+        return pedidoId.map(pedidoMapper::map).orElse(null);
+
     }
 
 
@@ -39,17 +52,21 @@ public class PedidoService {
     }
 
     //Atualizar Pedido
-    public PedidoModel atualizarPedido(Long id, PedidoModel pedidoAtualizado){
-        if(pedidoRepository.existsById(id)){
-            return pedidoRepository.save(pedidoAtualizado);
+    public PedidoDTO atualizarPedido(Long id, PedidoDTO pedidoDTO){
+        Optional<PedidoModel> pedido = pedidoRepository.findById(id);
+        if(pedido.isPresent()){
+            PedidoModel pedidoAtualizado = pedidoMapper.map(pedidoDTO);
+            pedidoAtualizado.setId(id);
+            PedidoModel pedidoSalvo = pedidoRepository.save(pedidoAtualizado);
+            return pedidoMapper.map(pedidoSalvo);
         }
         return null;
     }
 
     //Busca pedido pelo numero do pedido
-    public PedidoModel buscarPorNumeroPedido(String numeroPedido){
-        return pedidoRepository.findByNumeroPedido(numeroPedido)
-                .orElse(null);
+    public PedidoDTO buscarPorNumeroPedido(String numeroPedido){
+        Optional<PedidoModel> pedido = pedidoRepository.findByNumeroPedido(numeroPedido);
+        return pedido.map(pedidoMapper::map).orElse(null);
     }
 
     // Deletar pedido pelo numero do pedido
@@ -62,29 +79,31 @@ public class PedidoService {
     }
 
     //Atualizar pedido pelo numero do pedido
-    public PedidoModel atualizarPorNumeroPedido(String numeroPedido, PedidoModel pedidoAtualizado){
+    public PedidoDTO atualizarPorNumeroPedido(String numeroPedido, PedidoDTO pedidoDTO){
         Optional<PedidoModel> pedidoExistente = pedidoRepository.findByNumeroPedido(numeroPedido);
 
         if(pedidoExistente.isPresent()){
-            PedidoModel pedido = pedidoExistente.get();
+            PedidoModel pedidoAtualizado = pedidoMapper.map(pedidoDTO);
+            pedidoAtualizado.setNumeroPedido(numeroPedido);
+            PedidoModel pedidoSalvo = pedidoRepository.save(pedidoAtualizado);
 
-            if (pedidoAtualizado.getDescricao() != null) {
-                pedido.setDescricao(pedidoAtualizado.getDescricao());
+            if (pedidoDTO.getDescricao() != null) {
+                pedidoSalvo.setDescricao(pedidoDTO.getDescricao());
             }
 
-            if (pedidoAtualizado.getValorTotal() != null){
-                pedido.setValorTotal(pedidoAtualizado.getValorTotal());
+            if (pedidoDTO.getValorTotal() != null){
+                pedidoSalvo.setValorTotal(pedidoDTO.getValorTotal());
             }
 
-            if (pedidoAtualizado.getDataPedido() != null){
-                pedido.setDataPedido(pedidoAtualizado.getDataPedido());
+            if (pedidoDTO.getDataPedido() != null){
+                pedidoSalvo.setDataPedido(pedidoDTO.getDataPedido());
             }
 
-            if (pedidoAtualizado.getCliente() != null){
-                pedido.setCliente(pedidoAtualizado.getCliente());
+            if (pedidoDTO.getCliente() != null){
+                pedidoSalvo.setCliente(pedidoDTO.getCliente());
             }
 
-            return pedidoRepository.save(pedido);
+            return pedidoMapper.map(pedidoSalvo);
         }
         return null;
     }
