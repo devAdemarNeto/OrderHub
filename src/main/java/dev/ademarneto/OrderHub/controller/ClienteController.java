@@ -1,5 +1,6 @@
 package dev.ademarneto.OrderHub.controller;
 
+import dev.ademarneto.OrderHub.DTO.ClienteDTO;
 import dev.ademarneto.OrderHub.Service.ClienteService;
 import dev.ademarneto.OrderHub.model.ClienteModel;
 import org.springframework.web.bind.annotation.*;
@@ -18,27 +19,27 @@ public class ClienteController {
 
     // Criar cliente
     @PostMapping
-    public ClienteModel criarCliente(@RequestBody ClienteModel cliente) {
+    public ClienteDTO criarCliente(@RequestBody ClienteDTO cliente) {
         return clienteService.criarCliente(cliente);
     }
 
     // Listar clientes
     @GetMapping
-    public List<ClienteModel> listarClientes() {
+    public List<ClienteDTO> listarClientes() {
         return clienteService.listarClientes();
     }
 
     // Buscar cliente pelo CPF (chave de negócio)
     @GetMapping("/{cpf}")
-    public ClienteModel buscarPorCpf(@PathVariable("cpf") String cpf) {
+    public ClienteDTO buscarPorCpf(@PathVariable("cpf") String cpf) {
         return clienteService.buscarPorCpf(cpf);
     }
 
     // Atualizar cliente parcialmente pelo CPF
     @PatchMapping("/{cpf}")
-    public ClienteModel atualizarPorCpf(
+    public ClienteDTO atualizarPorCpf(
             @PathVariable("cpf") String cpf,
-            @RequestBody ClienteModel clienteAtualizado) {
+            @RequestBody ClienteDTO clienteAtualizado) {
 
         return clienteService.atualizarPorCpf(cpf, clienteAtualizado);
     }
