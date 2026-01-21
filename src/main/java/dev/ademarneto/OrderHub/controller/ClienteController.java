@@ -2,13 +2,15 @@ package dev.ademarneto.OrderHub.controller;
 
 import dev.ademarneto.OrderHub.DTO.ClienteDTO;
 import dev.ademarneto.OrderHub.Service.ClienteService;
-import dev.ademarneto.OrderHub.model.ClienteModel;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/clientes")
+@Tag(name = "Clientes", description = "Endipoints para gerenciamento de clientes")
 public class ClienteController {
 
     private final ClienteService clienteService;
@@ -17,25 +19,26 @@ public class ClienteController {
         this.clienteService = clienteService;
     }
 
-    // Criar cliente
+    @Operation(summary = "Criar novo cliente", description = "Cadastra um cliente com CPF ùnico")
     @PostMapping
     public ClienteDTO criarCliente(@RequestBody ClienteDTO cliente) {
         return clienteService.criarCliente(cliente);
     }
 
-    // Listar clientes
+    @Operation(summary = "Listar clientes", description = "Retorna todos os clientes cadastrados")
     @GetMapping
     public List<ClienteDTO> listarClientes() {
         return clienteService.listarClientes();
     }
 
-    // Buscar cliente pelo CPF (chave de negócio)
+    @Operation(summary = "Buscar cliente",
+            description = "Recupera os detalhes completos de um cliente específico utilizando seu numero do CPF")
     @GetMapping("/{cpf}")
     public ClienteDTO buscarPorCpf(@PathVariable("cpf") String cpf) {
         return clienteService.buscarPorCpf(cpf);
     }
 
-    // Atualizar cliente parcialmente pelo CPF
+    @Operation(summary = "Atualizar cliente", description = "Atualiza total ou parcialmente os dados de um cliente existente, baseado no numero do CPF")
     @PatchMapping("/{cpf}")
     public ClienteDTO atualizarPorCpf(
             @PathVariable("cpf") String cpf,
@@ -44,7 +47,7 @@ public class ClienteController {
         return clienteService.atualizarPorCpf(cpf, clienteAtualizado);
     }
 
-    // Deletar cliente pelo CPF
+    @Operation(summary = "Delatar cliente", description = "Remove um cliente do sistema, baseado no numero seu CPF")
     @DeleteMapping("/{cpf}")
     public void deletarPorCpf(@PathVariable("cpf") String cpf) {
         clienteService.deletarPorCpf(cpf);

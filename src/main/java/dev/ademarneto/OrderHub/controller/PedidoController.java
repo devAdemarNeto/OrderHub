@@ -4,12 +4,15 @@ import dev.ademarneto.OrderHub.DTO.PedidoDTO;
 import dev.ademarneto.OrderHub.Service.PedidoService;
 import dev.ademarneto.OrderHub.model.ClienteModel;
 import dev.ademarneto.OrderHub.model.PedidoModel;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/pedido")
+@Tag(name = "Pedidos", description = "Gestão de pedidos de venda")
 public class PedidoController {
 
     private final PedidoService pedidoService;
@@ -18,32 +21,33 @@ public class PedidoController {
         this.pedidoService = pedidoService;
     }
 
-    //Criar Pedido
+    @Operation(summary = "Criar pedido", description = "Registra um novo pedido para um cliente existente")
     @PostMapping
     public PedidoDTO criarPedido(@RequestBody PedidoDTO pedido){
         return pedidoService.criarPedido(pedido);
     }
 
-    //Listar pedidos
+    @Operation(summary = "Listar pedidos", description = "Retorna todos os pedidos cadastrados")
     @GetMapping
     public List<PedidoDTO> listarPedidos(){
         return pedidoService.listarPedidos();
     }
 
 
-    //buscar pedido pelo numero do pedido
+    @Operation(summary = "Buscar pedidos",
+               description = "Recupera os detalhes completos de um pedido específico utilizando o numero do pedido")
     @GetMapping("/{numeropedido}")
     public PedidoDTO buscarPorNumeroPedido(@PathVariable("numeroPedido") String numeroPedido){
         return pedidoService.buscarPorNumeroPedido(numeroPedido);
     }
 
-    //Atualizar pedido pelo numero do pedido
+    @Operation(summary = "Atualizar pedido",description = "Atualiza total ou parcialmente os dados de um pedido existente, baseado no numero do pedido ")
     @PatchMapping("/{numeropedido}")
-    public PedidoDTO atualizar(@PathVariable("numeroPedido") String numeroPedido, @RequestBody PedidoDTO pedidoAtualizado){
+    public PedidoDTO atualizarPedido(@PathVariable("numeroPedido") String numeroPedido, @RequestBody PedidoDTO pedidoAtualizado){
         return pedidoService.atualizarPorNumeroPedido(numeroPedido,pedidoAtualizado);
     }
 
-    //Deletar pedido pelo numero do pedido
+    @Operation(summary = "Deletar pedido", description = "Remove um pedido do sistema, baseado no numero do pedido")
     @DeleteMapping("{numeropedido}")
     public void deletarPorNumeroPedido(@PathVariable("numeropedido") String numeroPedido){
         pedidoService.deletarPorNumeroPedido(numeroPedido);

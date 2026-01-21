@@ -55,26 +55,24 @@ public class ClienteService {
 
     }
 
-    //Atualizar cliente por CPF
-    public ClienteDTO atualizarPorCpf(String cpf, ClienteDTO clienteDTO){
-        Optional<ClienteModel> clienteExistente = clienteRepository.findByCpf(cpf);
+    // Atualizar cliente parcialmente pelo CPF
+    public ClienteDTO atualizarPorCpf(String cpf, ClienteDTO clienteDTO) {
 
-        if (clienteExistente.isPresent()){
-            ClienteModel clienteAtualizado = clienteMapper.map(clienteDTO);
-            clienteAtualizado.setCpf(cpf);
-            ClienteModel clienteSalvo = clienteRepository.save(clienteAtualizado);
+        ClienteModel cliente = clienteRepository.findByCpf(cpf)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
-            if (clienteDTO.getNome() != null && !clienteDTO.getNome().isBlank()){
-                clienteSalvo.setNome(clienteDTO.getNome());
-            }
-
-            if (clienteDTO.getEmail() != null && !clienteDTO.getNome().isBlank()){
-                clienteSalvo.setEmail(clienteDTO.getEmail());
-            }
-            return clienteMapper.map(clienteSalvo);
+        if (clienteDTO.getNome() != null && !clienteDTO.getNome().isBlank()) {
+            cliente.setNome(clienteDTO.getNome());
         }
-        return null;
+
+        if (clienteDTO.getEmail() != null && !clienteDTO.getEmail().isBlank()) {
+            cliente.setEmail(clienteDTO.getEmail());
+        }
+
+        ClienteModel clienteSalvo = clienteRepository.save(cliente);
+        return clienteMapper.map(clienteSalvo);
     }
+
 
     //Deletar cliente por cpf
     public boolean deletarPorCpf(String cpf){

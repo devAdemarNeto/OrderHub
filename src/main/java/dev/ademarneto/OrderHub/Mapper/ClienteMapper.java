@@ -20,12 +20,12 @@ public class ClienteMapper {
 
     public ClienteDTO map(ClienteModel clienteModel){
         ClienteDTO clienteDTO = new ClienteDTO();
-        clienteDTO.setId(clienteDTO.getId());
-        clienteDTO.setNome(clienteDTO.getNome());
-        clienteDTO.setCpf(clienteDTO.getCpf());
-        clienteDTO.setEmail(clienteDTO.getEmail());
-        clienteDTO.setDataCadastro(clienteDTO.getDataCadastro());
-        clienteDTO.setPedidos(clienteDTO.getPedidos());
+        clienteDTO.setId(clienteModel.getId());
+        clienteDTO.setNome(clienteModel.getNome());
+        clienteDTO.setCpf(clienteModel.getCpf());
+        clienteDTO.setEmail(clienteModel.getEmail());
+        clienteDTO.setDataCadastro(clienteModel.getDataCadastro());
+        clienteDTO.setPedidos(clienteModel.getPedidos());
         return clienteDTO;
     }
 }
