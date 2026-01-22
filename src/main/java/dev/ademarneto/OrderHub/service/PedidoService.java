@@ -1,10 +1,9 @@
-package dev.ademarneto.OrderHub.Service;
+package dev.ademarneto.OrderHub.service;
 
-import dev.ademarneto.OrderHub.DTO.PedidoDTO;
-import dev.ademarneto.OrderHub.Mapper.PedidoMapper;
+import dev.ademarneto.OrderHub.dto.PedidoDTO;
+import dev.ademarneto.OrderHub.mapper.PedidoMapper;
 import dev.ademarneto.OrderHub.model.PedidoModel;
 import dev.ademarneto.OrderHub.repository.PedidoRepository;
-import org.apache.catalina.mapper.Mapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

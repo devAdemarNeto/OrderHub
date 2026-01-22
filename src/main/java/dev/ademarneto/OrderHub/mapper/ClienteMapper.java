@@ -1,6 +1,6 @@
-package dev.ademarneto.OrderHub.Mapper;
+package dev.ademarneto.OrderHub.mapper;
 
-import dev.ademarneto.OrderHub.DTO.ClienteDTO;
+import dev.ademarneto.OrderHub.dto.ClienteDTO;
 import dev.ademarneto.OrderHub.model.ClienteModel;
 import org.springframework.stereotype.Component;
 

@@ -1,9 +1,7 @@
 package dev.ademarneto.OrderHub.controller;
 
-import dev.ademarneto.OrderHub.DTO.PedidoDTO;
-import dev.ademarneto.OrderHub.Service.PedidoService;
-import dev.ademarneto.OrderHub.model.ClienteModel;
-import dev.ademarneto.OrderHub.model.PedidoModel;
+import dev.ademarneto.OrderHub.dto.PedidoDTO;
+import dev.ademarneto.OrderHub.service.PedidoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package dev.ademarneto.OrderHub.DTO;
+package dev.ademarneto.OrderHub.dto;
 
 
 import dev.ademarneto.OrderHub.model.PedidoModel;

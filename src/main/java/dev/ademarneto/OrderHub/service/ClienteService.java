@@ -1,7 +1,7 @@
-package dev.ademarneto.OrderHub.Service;
+package dev.ademarneto.OrderHub.service;
 
-import dev.ademarneto.OrderHub.DTO.ClienteDTO;
-import dev.ademarneto.OrderHub.Mapper.ClienteMapper;
+import dev.ademarneto.OrderHub.dto.ClienteDTO;
+import dev.ademarneto.OrderHub.mapper.ClienteMapper;
 import dev.ademarneto.OrderHub.model.ClienteModel;
 import dev.ademarneto.OrderHub.repository.ClienteRepository;
 import dev.ademarneto.OrderHub.validation.ValidadorCpf;
