@@ -1,6 +1,6 @@
 # OrderHub - Sistema de Gestão de Clientes e Pedidos
 
-O **OrderHub** é um sistema web robusto e moderno desenvolvido para otimizar o gerenciamento de clientes e pedidos. Construído com **Spring Boot**, **Thymeleaf** e **Bootstrap 5**, o projeto segue princípios de arquitetura limpa, boas práticas de desenvolvimento (SOLID, MVC) e foca na melhor experiência para o usuário final.
+O **OrderHub** é um sistema web desenvolvido para otimizar o gerenciamento de clientes e pedidos. Construído com **Spring Boot**, **Thymeleaf** e **Bootstrap 5**, o projeto segue princípios de arquitetura limpa, boas práticas de desenvolvimento (SOLID, MVC) e foca na melhor experiência para o usuário final.
 
 ## 📋 Sobre o Projeto
 
