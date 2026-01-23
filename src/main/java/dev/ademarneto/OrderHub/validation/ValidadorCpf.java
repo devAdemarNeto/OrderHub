@@ -13,8 +13,13 @@ package dev.ademarneto.OrderHub.validation;
 public class ValidadorCpf {
 
     public static boolean isValid(String cpf) {
+        if (cpf == null)
+            return false;
 
-        if (cpf == null || !cpf.matches("\\d{11}")) {
+        // Remove caracteres não numéricos permitindo validar CPFs formatados
+        cpf = cpf.replaceAll("\\D", "");
+
+        if (!cpf.matches("\\d{11}")) {
             return false;
         }
 
@@ -28,7 +33,8 @@ public class ValidadorCpf {
         }
 
         int firstDigit = (sum * 10) % 11;
-        if (firstDigit == 10) firstDigit = 0;
+        if (firstDigit == 10)
+            firstDigit = 0;
 
         if (firstDigit != Character.getNumericValue(cpf.charAt(9))) {
             return false;
@@ -40,7 +46,8 @@ public class ValidadorCpf {
         }
 
         int secondDigit = (sum * 10) % 11;
-        if (secondDigit == 10) secondDigit = 0;
+        if (secondDigit == 10)
+            secondDigit = 0;
 
         return secondDigit == Character.getNumericValue(cpf.charAt(10));
     }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PedidoMapper {
 
-    public PedidoModel map(PedidoDTO pedidoDTO){
+    public PedidoModel map(PedidoDTO pedidoDTO) {
         PedidoModel pedidoModel = new PedidoModel();
         pedidoModel.setId(pedidoDTO.getId());
         pedidoModel.setNumeroPedido(pedidoDTO.getNumeroPedido());
@@ -19,8 +19,7 @@ public class PedidoMapper {
         return pedidoModel;
     }
 
-
-    public PedidoDTO map(PedidoModel pedidoModel){
+    public PedidoDTO map(PedidoModel pedidoModel) {
         PedidoDTO pedidoDTO = new PedidoDTO();
         pedidoDTO.setId(pedidoModel.getId());
         pedidoDTO.setNumeroPedido(pedidoModel.getNumeroPedido());
@@ -28,6 +27,10 @@ public class PedidoMapper {
         pedidoDTO.setValorTotal(pedidoModel.getValorTotal());
         pedidoDTO.setDataPedido(pedidoModel.getDataPedido());
         pedidoDTO.setCliente(pedidoModel.getCliente());
+
+        if (pedidoModel.getCliente() != null) {
+            pedidoDTO.setClienteId(pedidoModel.getCliente().getId());
+        }
 
         return pedidoDTO;
     }

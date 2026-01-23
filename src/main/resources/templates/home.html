@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-bs-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - OrderHub</title>
+    <!-- Bootstrap 5 CSS (Dark Mode Pattern) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Ícones (Bootstrap Icons) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <style>
+        body {
+            background-color: #121212;
+            /* Fundo Preto Profundo */
+            color: #e0e0e0;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container py-5">
+        <!-- Título Central -->
+        <div class="text-center mb-5">
+            <h1 class="display-5 fw-bold text-white">Sistema de Gestão de Clientes e Pedidos</h1>
+            <p class="lead text-secondary">Bem-vindo ao painel de controle administrativo</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+
+            <!-- Card Clientes (Azul) -->
+            <div class="col-md-5">
+                <a href="/clientes-view" class="text-decoration-none">
+                    <div class="card bg-primary text-white border-0 shadow-lg card-hover h-100">
+                        <div class="card-body p-5 text-center">
+                            <i class="bi bi-people-fill display-1 mb-3"></i>
+                            <h2 class="card-title fw-bold">Clientes</h2>
+                            <p class="card-text opacity-75">Cadastrar, listar, editar e remover clientes</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Card Pedidos (Azul - usamos info ou primary variante) -->
+            <div class="col-md-5">
+                <a href="/pedidos-view" class="text-decoration-none">
+                    <div class="card bg-primary text-white border-0 shadow-lg card-hover h-100">
+                        <div class="card-body p-5 text-center">
+                            <i class="bi bi-cart-fill display-1 mb-3"></i>
+                            <h2 class="card-title fw-bold">Pedidos</h2>
+                            <p class="card-text opacity-75">Cadastrar, listar e gerenciar pedidos</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Card H2 Console (Verde) -->
+            <div class="col-md-10">
+                <a href="/h2-console" target="_blank" class="text-decoration-none">
+                    <div class="card bg-success text-white border-0 shadow-lg card-hover">
+                        <div class="card-body p-4 text-center d-flex align-items-center justify-content-center gap-3">
+                            <i class="bi bi-database-fill h2 mb-0"></i>
+                            <div>
+                                <h3 class="card-title fw-bold mb-0">Console H2 Database</h3>
+                                <small class="opacity-75">Acessar console do banco de dados (Apenas Dev)</small>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

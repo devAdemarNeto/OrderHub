@@ -1,4 +1,4 @@
-package dev.ademarneto.OrderHub.controller;
+package dev.ademarneto.OrderHub.controller.api;
 
 import dev.ademarneto.OrderHub.dto.PedidoDTO;
 import dev.ademarneto.OrderHub.service.PedidoService;

@@ -7,7 +7,6 @@ import dev.ademarneto.OrderHub.repository.ClienteRepository;
 import dev.ademarneto.OrderHub.validation.ValidadorCpf;
 import org.springframework.stereotype.Service;
 
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,17 +21,27 @@ public class ClienteService {
         this.clienteMapper = clienteMapper;
     }
 
-    //Criar um novo cliente
-    public ClienteDTO criarCliente(ClienteDTO clienteDTO){
+    // Criar um novo cliente
+    public ClienteDTO criarCliente(ClienteDTO clienteDTO) {
+        // Limpar CPF antes de qualquer processamento
+        if (clienteDTO.getCpf() != null) {
+            clienteDTO.setCpf(clienteDTO.getCpf().replaceAll("\\D", ""));
+        }
+
         ClienteModel cliente = clienteMapper.map(clienteDTO);
 
-        //Regra de negócio: CPF válido
-        if(!ValidadorCpf.isValid(clienteDTO.getCpf())){
+        // Preencher data de cadastro se estiver nula
+        if (cliente.getDataCadastro() == null) {
+            cliente.setDataCadastro(java.time.LocalDate.now());
+        }
+
+        // Regra de negócio: CPF válido
+        if (!ValidadorCpf.isValid(clienteDTO.getCpf())) {
             throw new IllegalArgumentException("CPF inválido");
         }
 
-        //Regra de negócio: CPF único
-        if(clienteRepository.existsByCpf(clienteDTO.getCpf())){
+        // Regra de negócio: CPF único
+        if (clienteRepository.existsByCpf(clienteDTO.getCpf())) {
             throw new IllegalArgumentException("CPF já cadastrado");
         }
         cliente = clienteRepository.save(cliente);
@@ -40,16 +49,16 @@ public class ClienteService {
         return clienteMapper.map(cliente);
     }
 
-    //Listar Clientes
-    public List<ClienteDTO> listarClientes(){
+    // Listar Clientes
+    public List<ClienteDTO> listarClientes() {
         List<ClienteModel> clientes = clienteRepository.findAll();
         return clientes.stream()
                 .map(clienteMapper::map)
                 .collect(Collectors.toList());
     }
 
-    //Buscar cliente por CPF
-    public ClienteDTO buscarPorCpf(String cpf){
+    // Buscar cliente por CPF
+    public ClienteDTO buscarPorCpf(String cpf) {
         Optional<ClienteModel> cliente = clienteRepository.findByCpf(cpf);
         return cliente.map(clienteMapper::map).orElse(null);
 
@@ -73,40 +82,65 @@ public class ClienteService {
         return clienteMapper.map(clienteSalvo);
     }
 
-
-    //Deletar cliente por cpf
-    public boolean deletarPorCpf(String cpf){
-        if (clienteRepository.existsByCpf(cpf)){
+    // Deletar cliente por cpf
+    public boolean deletarPorCpf(String cpf) {
+        if (clienteRepository.existsByCpf(cpf)) {
             clienteRepository.deleteByCpf(cpf);
             return true;
         }
         return false;
     }
 
-
-
-
-
     // USO INTERNO (NÃO EXPOR NA API)
 
-    //Listar Clientes por Id
-    public ClienteModel listarClientesID(Long id){
-        Optional<ClienteModel> clientID = clienteRepository.findById(id);
-        return clientID.orElse(null);
+    // Buscar cliente por ID (Para uso no Frontend/Web)
+    public ClienteDTO buscarPorId(Long id) {
+        return clienteRepository.findById(id)
+                .map(clienteMapper::map)
+                .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado com ID: " + id));
     }
 
-    //Deletar Cliente por ID
-    public void deletarCliente(Long id){
+    // Atualizar cliente por ID (Para uso no Frontend/Web)
+    public ClienteDTO atualizarPorId(Long id, ClienteDTO clienteDTO) {
+        ClienteModel cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado com ID: " + id));
+
+        cliente.setNome(clienteDTO.getNome());
+        cliente.setEmail(clienteDTO.getEmail());
+        if (clienteDTO.getCpf() != null) {
+            String cpfLimpo = clienteDTO.getCpf().replaceAll("\\D", "");
+            clienteDTO.setCpf(cpfLimpo);
+            cliente.setCpf(cpfLimpo);
+        }
+
+        ClienteModel clienteSalvo = clienteRepository.save(cliente);
+        return clienteMapper.map(clienteSalvo);
+    }
+
+    // Deletar Cliente por ID
+    public void deletarPorId(Long id) {
+        if (!clienteRepository.existsById(id)) {
+            throw new IllegalArgumentException("Cliente não encontrado com ID: " + id);
+        }
         clienteRepository.deleteById(id);
     }
 
-    //Atualizar Pedido por ID
-    public ClienteModel atualizarCliente(Long id, ClienteModel clienteAtualizado){
-        if(clienteRepository.existsById(id)){
+    // MÉTODOS LEGADOS / INTERNOS (Podem ser removidos ou mantidos se usados em
+    // outro lugar)
+    // Manterei por compatibilidade se necessário, mas os acima são preferenciais.
+    public ClienteModel listarClientesID(Long id) {
+        return clienteRepository.findById(id).orElse(null);
+    }
+
+    public void deletarCliente(Long id) {
+        clienteRepository.deleteById(id);
+    }
+
+    public ClienteModel atualizarCliente(Long id, ClienteModel clienteAtualizado) {
+        if (clienteRepository.existsById(id)) {
             return clienteRepository.save(clienteAtualizado);
         }
         return null;
     }
-
 
 }

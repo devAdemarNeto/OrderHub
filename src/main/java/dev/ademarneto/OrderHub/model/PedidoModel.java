@@ -22,18 +22,17 @@ public class PedidoModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @NotBlank(message = "Numero do pedido é obrigatório")
-    @Column(name = "numero_pedido", nullable = false,unique = true,length = 20)
+    @Column(name = "numero_pedido", nullable = false, unique = true, length = 20)
     private String numeroPedido;
 
     @NotBlank(message = "Descrição é obrigatória")
-    @Column(nullable = false,length = 500)
+    @Column(nullable = false, length = 500)
     private String descricao;
 
     @NotNull(message = "Valor é obrigatório")
-    @DecimalMin(value = "0,01", message = "Valor deve ser maior que zero")
-    @Column(name = "valor_total",nullable = false, precision = 10, scale = 2)
+    @DecimalMin(value = "0.01", message = "Valor deve ser maior que zero")
+    @Column(name = "valor_total", nullable = false, precision = 10, scale = 2)
     private BigDecimal valorTotal;
 
     @NotNull(message = "Data do pedido é obrigatório")
@@ -44,6 +43,5 @@ public class PedidoModel {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id", nullable = false)
     private ClienteModel cliente;
-
 
 }

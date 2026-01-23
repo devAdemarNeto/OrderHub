@@ -2,7 +2,9 @@ package dev.ademarneto.OrderHub.service;
 
 import dev.ademarneto.OrderHub.dto.PedidoDTO;
 import dev.ademarneto.OrderHub.mapper.PedidoMapper;
+import dev.ademarneto.OrderHub.model.ClienteModel;
 import dev.ademarneto.OrderHub.model.PedidoModel;
+import dev.ademarneto.OrderHub.repository.ClienteRepository;
 import dev.ademarneto.OrderHub.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +14,15 @@ import java.util.stream.Collectors;
 
 @Service
 public class PedidoService {
-    private PedidoRepository pedidoRepository;
-    private PedidoMapper pedidoMapper;
+    private final PedidoRepository pedidoRepository;
+    private final PedidoMapper pedidoMapper;
+    private final ClienteRepository clienteRepository;
 
-    public PedidoService(PedidoRepository pedidoRepository, PedidoMapper pedidoMapper) {
+    public PedidoService(PedidoRepository pedidoRepository, PedidoMapper pedidoMapper,
+            ClienteRepository clienteRepository) {
         this.pedidoRepository = pedidoRepository;
         this.pedidoMapper = pedidoMapper;
+        this.clienteRepository = clienteRepository;
     }
 
     // Criar um novo Pedido
@@ -28,6 +33,15 @@ public class PedidoService {
         }
 
         PedidoModel pedido = pedidoMapper.map(pedidoDTO);
+
+        // Vincular Cliente pelo ID (se fornecido)
+        if (pedidoDTO.getClienteId() != null) {
+            ClienteModel cliente = clienteRepository.findById(pedidoDTO.getClienteId())
+                    .orElseThrow(() -> new IllegalArgumentException(
+                            "Cliente não encontrado com ID: " + pedidoDTO.getClienteId()));
+            pedido.setCliente(cliente);
+        }
+
         pedido = pedidoRepository.save(pedido);
         return pedidoMapper.map(pedido);
     }

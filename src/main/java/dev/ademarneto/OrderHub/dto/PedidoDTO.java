@@ -18,5 +18,6 @@ public class PedidoDTO {
     private String descricao;
     private BigDecimal valorTotal;
     private LocalDate dataPedido;
-    private ClienteModel cliente;
+    private Long clienteId; // ID do Cliente para input
+    private ClienteModel cliente; // Objeto completo para output
 }

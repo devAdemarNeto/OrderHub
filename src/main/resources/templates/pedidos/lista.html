@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Pedidos - OrderHub</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        .table-dark {
+            --bs-table-bg: #1e1e1e;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="fw-bold">Pedidos</h1>
+            <a href="/pedidos-view/novo" class="btn btn-primary"><i class="bi bi-cart-plus-fill me-2"></i>Novo
+                Pedido</a>
+        </div>
+
+        <!-- Alertas -->
+        <div th:if="${mensagemSucesso}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i><span th:text="${mensagemSucesso}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${mensagemErro}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i><span th:text="${mensagemErro}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="card bg-dark border-secondary shadow-sm">
+            <div class="card-body p-0 table-responsive">
+                <table class="table table-dark table-hover mb-0 align-middle">
+                    <thead class="table-secondary text-uppercase small text-muted">
+                        <tr>
+                            <th class="ps-4">ID</th>
+                            <th>Nº Pedido</th>
+                            <th>Data</th>
+                            <th>Cliente</th>
+                            <th>Total</th>
+                            <th class="text-end pe-4">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:if="${#lists.isEmpty(pedidos)}">
+                            <td colspan="6" class="text-center py-4 text-muted">
+                                Nenhum pedido registrado.
+                            </td>
+                        </tr>
+                        <tr th:each="pedido : ${pedidos}">
+                            <td class="ps-4 fw-bold text-secondary" th:text="${'#' + pedido.id}">#1</td>
+                            <td class="font-monospace" th:text="${pedido.numeroPedido}">PED-001</td>
+                            <td th:text="${#temporals.format(pedido.dataPedido, 'dd/MM/yyyy')}">01/01/2026</td>
+                            <td>
+                                <span th:if="${pedido.cliente != null}" th:text="${pedido.cliente.nome}"
+                                    class="fw-semibold">Cliente Nome</span>
+                                <span th:if="${pedido.cliente == null}" class="text-muted fst-italic">Sem Cliente</span>
+                            </td>
+                            <td class="text-success fw-bold" th:text="${'R$ ' + pedido.valorTotal}">R$ 100.00</td>
+                            <td class="text-end pe-4">
+                                <a th:href="@{/pedidos-view/editar/{id}(id=${pedido.id})}"
+                                    class="btn btn-sm btn-outline-warning me-2" title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a th:href="@{/pedidos-view/deletar/{id}(id=${pedido.id})}"
+                                    class="btn btn-sm btn-outline-danger"
+                                    onclick="return confirm('Tem certeza que deseja excluir este pedido?')"
+                                    title="Excluir">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="mt-4">
+            <a href="/" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-2"></i>Voltar ao Dashboard</a>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
