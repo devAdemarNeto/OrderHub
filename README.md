@@ -1,52 +1,75 @@
 # OrderHub - Sistema de Gestão de Clientes e Pedidos
 
-Sistema web para gestão de clientes e pedidos desenvolvido como parte da **Prova Técnica - Engenheiro de Software**. A aplicação foi desenvolvida utilizando **Spring Boot**, **Thymeleaf** e **Bootstrap 5**, seguindo boas práticas de desenvolvimento (SOLID, MVC) e arquitetura limpa.
+O **OrderHub** é um sistema web robusto e moderno desenvolvido para otimizar o gerenciamento de clientes e pedidos. Construído com **Spring Boot**, **Thymeleaf** e **Bootstrap 5**, o projeto segue princípios de arquitetura limpa, boas práticas de desenvolvimento (SOLID, MVC) e foca na melhor experiência para o usuário final.
 
 ## 📋 Sobre o Projeto
 
-Este projeto foi desenvolvido para atender aos requisitos de uma prova técnica que avalia a capacidade de modelar, desenvolver e organizar código limpo, funcional e bem estruturado.
+Este projeto consiste em uma aplicação web corporativa full-stack, projetada para ser escalável e de fácil manutenção. Ele centraliza o cadastro de informações vitais do negócio, permitindo controle total sobre a base de clientes e o fluxo de pedidos.
 
-### Objetivo
-Desenvolver uma aplicação web performática e responsiva para gestão de clientes e pedidos, onde é possível:
-- ✅ **Clientes**: Cadastrar, Listar, Editar e Remover.
-- ✅ **Pedidos**: Criar pedidos vinculados a clientes, Listar e Gerenciar.
-- ✅ **Dashboard**: Visão geral e acesso rápido.
-- ✅ **UX/UI**: Interface moderna (Dark Mode) e feedbacks visuais.
+### Principais Objetivos
+- **Gestão Eficiente**: Centralizar dados de clientes e pedidos em uma interface intuitiva.
+- **Produtividade**: Fluxos de cadastro rápidos com validações automáticas.
+- **Confiabilidade**: Garantia de integridade de dados (CPF único, valores monetários corretos).
+- **Modernidade**: Interface responsiva com tema Dark Mode, amigável para uso prolongado.
 
 ---
 
 ## 🛠️ Tecnologias Utilizadas
 
 ### Backend
-- **Java 17** - Linguagem de programação moderna.
-- **Spring Boot 3+** - Framework base para configuração e produtividade.
-- **Spring Data JPA** - Abstração para persistência de dados.
-- **H2 Database** - Banco de dados em memória para execução rápida e desenvolvimento.
-- **Flyway** - Versionamento de banco de dados (Migrations).
-- **Bean Validation** - Validação de dados robusta e declarativa.
-- **Swagger / OpenAPI** - Documentação automática da API.
+- **Java 17** - Linguagem de programação moderna e performática.
+- **Spring Boot 3+** - Framework líder de mercado para desenvolvimento ágil.
+- **Spring Data JPA** - Camada de persistência simplificada e poderosa.
+- **H2 Database** - Banco de dados em memória (configurável para bancos externos).
+- **Flyway** - Controle de versão do esquema do banco de dados.
+- **Bean Validation** - Validação de regras de negócio declarativa.
+- **Swagger / OpenAPI** - Documentação viva e interativa da API.
 
 ### Frontend
-- **Thymeleaf** - Template Engine para renderização server-side.
-- **Bootstrap 5** - Framework CSS para estilização e responsividade (Tema Dark Mode).
-- **Bootstrap Icons** - Ícones vetoriais.
+- **Thymeleaf** - Renderização de páginas no servidor (Server-Side Rendering).
+- **Bootstrap 5** - Framework de UI para design responsivo e componentes estéticos.
+- **Bootstrap Icons** - Biblioteca de ícones vetoriais integrados.
 
-### Ferramentas
-- **Maven** - Gerenciamento de dependências e build.
-- **Lombok** - Redução de código boilerplate (Getters/Setters/Constructors).
+### Ferramentas e Produtividade
+- **Maven** - Gerenciamento robusto de dependências e ciclo de vida de build.
+- **Lombok** - Redução de código repetitivo, focando no que importa.
 
 ---
 
-## 📦 Como Executar o Projeto
+## 📦 Funcionalidades
+
+### 👥 Módulo de Clientes
+*   **Cadastro Completo**: Registro de Nome, CPF e E-mail.
+*   **Inteligência de Dados**:
+    *   Validação avançada de CPF (formato e dígitos verificadores).
+    *   Verificação automática de duplicidade no banco.
+    *   Sanitização de dados (remoção de formatação) antes da persistência.
+*   **CRUD Total**: Listagem, Edição e Remoção segura de clientes.
+
+### 📦 Módulo de Pedidos
+*   **Integração**: Vínculo direto com a base de Clientes através de seleção dinâmica.
+*   **Controle Financeiro**: Campos monetários com precisão decimal correta (`BigDecimal`).
+*   **Experiência de Uso**:
+    *   Dropdown com busca de clientes.
+    *   Prevenção de erros com feedbacks visuais claros.
+    *   Tratamento de exceções amigável (evita telas de erro técnico).
+
+### 📊 Dashboard
+*   Visão geral e acesso rápido às principais funcionalidades do sistema.
+
+---
+
+## 🚀 Como Executar o Projeto
+
+Simples e direto, sem necessidade de instalações complexas.
 
 ### Pré-requisitos
-*   **Java JDK 17** ou superior.
-*   **Maven** (opcional, pois o projeto inclui o wrapper `mvnw`).
+*   **Java JDK 17** instalado.
 
-### Executando com Spring Boot Wrapper (Recomendado)
+### Passo a Passo
 
-1.  Clone o projeto ou extraia o arquivo.
-2.  Abra o terminal na raiz do projeto.
+1.  Clone este repositório.
+2.  Abra o terminal na pasta do projeto.
 3.  Execute o comando:
 
 **No Windows:**
@@ -59,86 +82,48 @@ Desenvolver uma aplicação web performática e responsiva para gestão de clien
 ./mvnw spring-boot:run
 ```
 
-A aplicação será iniciada e estará disponível em **http://localhost:8080**.
+Acesse a aplicação em: **http://localhost:8080**
 
 ---
 
-## 🔗 URLs Principais
+## 🔗 Links Úteis
 
-| Recurso | URL | Descrição |
-|---------|-----|-----------|
-| **Dashboard** | `http://localhost:8080/` | Página inicial com atalhos |
-| **Clientes** | `http://localhost:8080/clientes-view` | Gestão de Clientes |
-| **Pedidos** | `http://localhost:8080/pedidos-view` | Gestão de Pedidos |
-| **Swagger UI** | `http://localhost:8080/swagger-ui/index.html` | Documentação da API |
-| **H2 Console** | `http://localhost:8080/h2-console` | Acesso direto ao banco |
+| Acesso | URL |
+|--------|-----|
+| **Aplicação (Home)** | `http://localhost:8080/` |
+| **Lista de Clientes** | `http://localhost:8080/clientes-view` |
+| **Lista de Pedidos** | `http://localhost:8080/pedidos-view` |
+| **Documentação API** | `http://localhost:8080/swagger-ui/index.html` |
+| **Banco de Dados** | `http://localhost:8080/h2-console` |
 
-> **Nota para H2 Console**:
-> - **JDBC URL**: `jdbc:h2:mem:orderhub` (Verificar log de inicialização se diferente)
-> - **User**: `sa`
-> - **Password**: (vazio)
+> **Nota para o H2 Console**:
+> - **Driver Class**: `org.h2.Driver`
+> - **JDBC URL**: `jdbc:h2:mem:orderhub`
+> - **User Name**: `sa`
+> - **Password**: (deixe em branco)
 
 ---
 
-## 📁 Estrutura do Projeto
+## 📁 Arquitetura do Sistema
 
-A arquitetura segue o padrão MVC (Model-View-Controller) com separação clara de responsabilidades:
+O sistema segue uma arquitetura em camadas bem definida, garantindo desacoplamento e facilidade de teste:
 
 ```
 src/main/java/dev/ademarneto/OrderHub/
-├── controller/
-│   ├── api/             # REST Controllers (Endpoints API)
-│   └── web/             # Web Controllers (Thymeleaf Views)
-├── service/             # Regras de Negócio
-├── repository/          # Interface de Acesso a Dados (JPA)
-├── model/               # Entidades JPA (Banco de Dados)
-├── dto/                 # Data Transfer Objects (Dados de Entrada/Saída)
-├── mapper/              # Conversores Entity <-> DTO
-└── validation/          # Validadores Personalizados (Ex: CPF)
+├── controller/          # Pontos de entrada (Web e API)
+│   ├── web/             # Controllers MVC (retornam Views HTML)
+│   └── api/             # Controllers REST (retornam JSON)
+├── service/             # Regras de Negócio e Validações
+├── repository/          # Interface com o Banco de Dados
+├── model/               # Entidades de Domínio (JPA)
+├── dto/                 # Objetos de Transferência de Dados (Segurança/Desacoplamento)
+└── mapper/              # Conversão entre Modelos e DTOs
 ```
-
----
-
-## 📝 Funcionalidades Detalhadas
-
-### 👥 Módulo de Clientes
-*   **Cadastro Simplificado**: Nome, CPF (com máscara automática), Email.
-*   **Validações Inteligentes**:
-    *   CPF válido (algoritmo matemática) e único no banco.
-    *   Limpeza automática de formatação (pontos/traços) antes de salvar.
-    *   Preenchimento automático da `dataCadastro`.
-*   **Feedback**: Alertas de sucesso ou erro (ex: falha ao salvar).
-
-### 📦 Módulo de Pedidos
-*   **Vínculo com Cliente**: Seleção via Dropdown dinâmico que busca clientes reais do banco.
-*   **Validações**:
-    *   Campos obrigatórios.
-    *   Valor mínimo R$ 0,01 (tratamento de decimal).
-*   **Tratamento de Erros**: Captura de exceções robusta para evitar telas de erro técnico (500), guiando o usuário de volta ao formulário com explicação.
-
----
-
-## 🔧 Configurações e Decisões Técnicas
-
-1.  **H2 Database (In-Memory)**:
-    *   Escolhido para facilitar a avaliação técnica sem necessidade de instalar um SGBD externo (como PostgreSQL/MySQL).
-    *   Os dados são recriados a cada reinicialização (ideal para testes).
-
-2.  **Validação de CPF**:
-    *   Implementada manualmente (`ValidadorCpf.java`) para demonstrar conhecimento de lógica algorítmica e validação customizada, em vez de depender apenas de bibliotecas prontas.
-
-3.  **DTOs e Mappers**:
-    *   Uso estrito de **DTOs** para tráfego de dados entre Controller e View/API, isolando a entidade de persistência (`Model`).
-    *   Mappers manuais para controle total da transformação.
-
-4.  **Frontend com Thymeleaf**:
-    *   Renderização no servidor (SSR), integrando perfeitamente com o ecossistema Spring Boot.
-    *   **Bootstrap 5 Dark Mode**: Escolha estética para modernidade e conforto visual.
 
 ---
 
 ## 👤 Autor
 
-Desenvolvido por **Ademar Neto** como parte da avaliação técnica.
+Desenvolvido por **Ademar Neto**.
 
-*   Desenvolvido com ❤️ utilizando **Java** e **Spring Boot**.
+Projeto criado com foco em qualidade de código, performance e melhores práticas de Engenharia de Software.
