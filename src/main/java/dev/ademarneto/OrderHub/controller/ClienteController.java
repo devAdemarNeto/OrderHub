@@ -2,6 +2,7 @@ package dev.ademarneto.OrderHub.controller;
 
 import dev.ademarneto.OrderHub.dto.ClienteDTO;
 import dev.ademarneto.OrderHub.service.ClienteService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,35 +22,45 @@ public class ClienteController {
 
     @Operation(summary = "Criar novo cliente", description = "Cadastra um cliente com CPF ùnico")
     @PostMapping
-    public ClienteDTO criarCliente(@RequestBody ClienteDTO cliente) {
-        return clienteService.criarCliente(cliente);
+    public ResponseEntity<ClienteDTO> criarCliente(@RequestBody ClienteDTO cliente) {
+        ClienteDTO novoCliente = clienteService.criarCliente(cliente);
+        return ResponseEntity.status(201).body(novoCliente);
     }
 
     @Operation(summary = "Listar clientes", description = "Retorna todos os clientes cadastrados")
     @GetMapping
-    public List<ClienteDTO> listarClientes() {
-        return clienteService.listarClientes();
+    public ResponseEntity<List<ClienteDTO>> listarClientes() {
+        List<ClienteDTO> clientes = clienteService.listarClientes();
+        return ResponseEntity.ok(clientes);
     }
 
     @Operation(summary = "Buscar cliente",
             description = "Recupera os detalhes completos de um cliente específico utilizando seu numero do CPF")
     @GetMapping("/{cpf}")
-    public ClienteDTO buscarPorCpf(@PathVariable("cpf") String cpf) {
-        return clienteService.buscarPorCpf(cpf);
+    public ResponseEntity<ClienteDTO> buscarPorCpf(@PathVariable("cpf") String cpf) {
+        ClienteDTO cliente = clienteService.buscarPorCpf(cpf);
+        if (cliente == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(cliente);
     }
 
     @Operation(summary = "Atualizar cliente", description = "Atualiza total ou parcialmente os dados de um cliente existente, baseado no numero do CPF")
     @PatchMapping("/{cpf}")
-    public ClienteDTO atualizarPorCpf(
+    public ResponseEntity<ClienteDTO> atualizarPorCpf(
             @PathVariable("cpf") String cpf,
             @RequestBody ClienteDTO clienteAtualizado) {
+        ClienteDTO clienteSalvo = clienteService.atualizarPorCpf(cpf,clienteAtualizado);
 
-        return clienteService.atualizarPorCpf(cpf, clienteAtualizado);
+        return ResponseEntity.ok(clienteSalvo);
+
+
     }
 
     @Operation(summary = "Delatar cliente", description = "Remove um cliente do sistema, baseado no numero seu CPF")
     @DeleteMapping("/{cpf}")
-    public void deletarPorCpf(@PathVariable("cpf") String cpf) {
+    public ResponseEntity<Void> deletarPorCpf(@PathVariable("cpf") String cpf) {
         clienteService.deletarPorCpf(cpf);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -20,16 +20,20 @@ public class PedidoService {
         this.pedidoMapper = pedidoMapper;
     }
 
-    //Criar um novo Pedido
-    public PedidoDTO criarPedido(PedidoDTO pedidoDTO){
+    // Criar um novo Pedido
+    public PedidoDTO criarPedido(PedidoDTO pedidoDTO) {
+        // Validação: Verificar se numero de pedido já existe
+        if (pedidoRepository.existsByNumeroPedido(pedidoDTO.getNumeroPedido())) {
+            throw new IllegalArgumentException("Já existe um pedido com este número: " + pedidoDTO.getNumeroPedido());
+        }
+
         PedidoModel pedido = pedidoMapper.map(pedidoDTO);
         pedido = pedidoRepository.save(pedido);
         return pedidoMapper.map(pedido);
     }
 
-
-    //Listar pedidos
-    public List<PedidoDTO>  listarPedidos(){
+    // Listar pedidos
+    public List<PedidoDTO> listarPedidos() {
         List<PedidoModel> pedidos = pedidoRepository.findAll();
         return pedidos.stream()
                 .map(pedidoMapper::map)
@@ -37,75 +41,81 @@ public class PedidoService {
 
     }
 
-    //Listar pedidos por id
-    public PedidoDTO listarPedidosId(Long id){
+    // Listar pedidos por id
+    public PedidoDTO listarPedidosId(Long id) {
         Optional<PedidoModel> pedidoId = pedidoRepository.findById(id);
         return pedidoId.map(pedidoMapper::map).orElse(null);
 
     }
 
-
     // Deletar pedido
-    public void deletarPedido(Long id){
+    public void deletarPedido(Long id) {
         pedidoRepository.deleteById(id);
     }
 
-    //Atualizar Pedido
-    public PedidoDTO atualizarPedido(Long id, PedidoDTO pedidoDTO){
-        Optional<PedidoModel> pedido = pedidoRepository.findById(id);
-        if(pedido.isPresent()){
-            PedidoModel pedidoAtualizado = pedidoMapper.map(pedidoDTO);
-            pedidoAtualizado.setId(id);
-            PedidoModel pedidoSalvo = pedidoRepository.save(pedidoAtualizado);
-            return pedidoMapper.map(pedidoSalvo);
-        }
-        return null;
+    // Atualizar Pedido (por ID)
+    public PedidoDTO atualizarPedido(Long id, PedidoDTO pedidoDTO) {
+        PedidoModel pedidoExistente = pedidoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado com ID: " + id));
+
+        // Atualiza os dados no objeto existente
+        if (pedidoDTO.getNumeroPedido() != null)
+            pedidoExistente.setNumeroPedido(pedidoDTO.getNumeroPedido());
+        if (pedidoDTO.getDescricao() != null)
+            pedidoExistente.setDescricao(pedidoDTO.getDescricao());
+        if (pedidoDTO.getValorTotal() != null)
+            pedidoExistente.setValorTotal(pedidoDTO.getValorTotal());
+        if (pedidoDTO.getDataPedido() != null)
+            pedidoExistente.setDataPedido(pedidoDTO.getDataPedido());
+        if (pedidoDTO.getCliente() != null)
+            pedidoExistente.setCliente(pedidoDTO.getCliente());
+
+        PedidoModel pedidoSalvo = pedidoRepository.save(pedidoExistente);
+        return pedidoMapper.map(pedidoSalvo);
     }
 
-    //Busca pedido pelo numero do pedido
-    public PedidoDTO buscarPorNumeroPedido(String numeroPedido){
+    // Busca pedido pelo numero do pedido
+    public PedidoDTO buscarPorNumeroPedido(String numeroPedido) {
         Optional<PedidoModel> pedido = pedidoRepository.findByNumeroPedido(numeroPedido);
         return pedido.map(pedidoMapper::map).orElse(null);
     }
 
     // Deletar pedido pelo numero do pedido
-    public boolean deletarPorNumeroPedido(String numeroPedido){
-        if(pedidoRepository.existsByNumeroPedido(numeroPedido)){
-            pedidoRepository.deleteByNumeroPedido(numeroPedido);
+    public boolean deletarPorNumeroPedido(String numeroPedido) {
+        // O metodo deleteByNumeroPedido precisa ser Transacional ou usamos o find +
+        // delete
+        Optional<PedidoModel> pedido = pedidoRepository.findByNumeroPedido(numeroPedido);
+        if (pedido.isPresent()) {
+            pedidoRepository.delete(pedido.get());
             return true;
         }
         return false;
     }
 
-    //Atualizar pedido pelo numero do pedido
-    public PedidoDTO atualizarPorNumeroPedido(String numeroPedido, PedidoDTO pedidoDTO){
-        Optional<PedidoModel> pedidoExistente = pedidoRepository.findByNumeroPedido(numeroPedido);
+    // Atualizar pedido pelo numero do pedido
+    public PedidoDTO atualizarPorNumeroPedido(String numeroPedido, PedidoDTO pedidoDTO) {
+        PedidoModel pedidoExistente = pedidoRepository.findByNumeroPedido(numeroPedido)
+                .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado com número: " + numeroPedido));
 
-        if(pedidoExistente.isPresent()){
-            PedidoModel pedidoAtualizado = pedidoMapper.map(pedidoDTO);
-            pedidoAtualizado.setNumeroPedido(numeroPedido);
-            PedidoModel pedidoSalvo = pedidoRepository.save(pedidoAtualizado);
-
-            if (pedidoDTO.getDescricao() != null) {
-                pedidoSalvo.setDescricao(pedidoDTO.getDescricao());
-            }
-
-            if (pedidoDTO.getValorTotal() != null){
-                pedidoSalvo.setValorTotal(pedidoDTO.getValorTotal());
-            }
-
-            if (pedidoDTO.getDataPedido() != null){
-                pedidoSalvo.setDataPedido(pedidoDTO.getDataPedido());
-            }
-
-            if (pedidoDTO.getCliente() != null){
-                pedidoSalvo.setCliente(pedidoDTO.getCliente());
-            }
-
-            return pedidoMapper.map(pedidoSalvo);
+        // Atualização PARCIAL inteligente (só mexe no que veio preenchido)
+        if (pedidoDTO.getDescricao() != null) {
+            pedidoExistente.setDescricao(pedidoDTO.getDescricao());
         }
-        return null;
+
+        if (pedidoDTO.getValorTotal() != null) {
+            pedidoExistente.setValorTotal(pedidoDTO.getValorTotal());
+        }
+
+        if (pedidoDTO.getDataPedido() != null) {
+            pedidoExistente.setDataPedido(pedidoDTO.getDataPedido());
+        }
+
+        // Não atualizamos o Cliente por segurança nesta rota simples, a menos que seja
+        // necessário
+        // if (pedidoDTO.getCliente() != null)
+        // pedidoExistente.setCliente(pedidoDTO.getCliente());
+
+        PedidoModel pedidoSalvo = pedidoRepository.save(pedidoExistente);
+        return pedidoMapper.map(pedidoSalvo);
     }
-
-
 }
