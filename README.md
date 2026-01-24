@@ -104,6 +104,23 @@ Acesse a aplicação em: **http://localhost:8080**
 
 ---
 
+## 📸 Galeria do Projeto
+
+### 🖥️ Dashboard
+![Dashboard](assets/dashboard.png)
+
+### 🛒 Gestão de Pedidos
+![Lista de Pedidos](assets/lista-pedidos.png)
+![Novo Pedido](assets/novo-pedido.png)
+
+### 👥 Gestão de Clientes
+![Novo Cliente](assets/novo-cliente.png)
+
+### 📚 Documentação (Swagger)
+![API Docs](assets/api-docs.png)
+
+---
+
 ## 📁 Arquitetura do Sistema
 
 O sistema segue uma arquitetura em camadas bem definida, garantindo desacoplamento e facilidade de teste:

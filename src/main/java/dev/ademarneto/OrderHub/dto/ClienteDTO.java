@@ -1,6 +1,5 @@
 package dev.ademarneto.OrderHub.dto;
 
-
 import dev.ademarneto.OrderHub.model.PedidoModel;
 
 import lombok.AllArgsConstructor;
