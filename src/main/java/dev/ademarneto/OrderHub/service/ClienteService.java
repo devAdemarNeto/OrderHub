@@ -91,7 +91,7 @@ public class ClienteService {
         return false;
     }
 
-    // USO INTERNO (NÃO EXPOR NA API)
+
 
     // Buscar cliente por ID (Para uso no Frontend/Web)
     public ClienteDTO buscarPorId(Long id) {
@@ -125,22 +125,6 @@ public class ClienteService {
         clienteRepository.deleteById(id);
     }
 
-    // MÉTODOS LEGADOS / INTERNOS (Podem ser removidos ou mantidos se usados em
-    // outro lugar)
-    // Manterei por compatibilidade se necessário, mas os acima são preferenciais.
-    public ClienteModel listarClientesID(Long id) {
-        return clienteRepository.findById(id).orElse(null);
-    }
 
-    public void deletarCliente(Long id) {
-        clienteRepository.deleteById(id);
-    }
-
-    public ClienteModel atualizarCliente(Long id, ClienteModel clienteAtualizado) {
-        if (clienteRepository.existsById(id)) {
-            return clienteRepository.save(clienteAtualizado);
-        }
-        return null;
-    }
 
 }

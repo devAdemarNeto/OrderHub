@@ -124,10 +124,6 @@ public class PedidoService {
             pedidoExistente.setDataPedido(pedidoDTO.getDataPedido());
         }
 
-        // Não atualizamos o Cliente por segurança nesta rota simples, a menos que seja
-        // necessário
-        // if (pedidoDTO.getCliente() != null)
-        // pedidoExistente.setCliente(pedidoDTO.getCliente());
 
         PedidoModel pedidoSalvo = pedidoRepository.save(pedidoExistente);
         return pedidoMapper.map(pedidoSalvo);
